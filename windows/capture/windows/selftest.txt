@@ -1,0 +1,38 @@
+PARKSENSE 1.0.0 öz-sınama · 2026-11-26T20:03:09.271405Z · windows "Windows Server 2025 Datacenter" 10.0 (Build 26100)
+EKRAN 01_acilis_konum_izni_yok kaydedildi
+--- Veri kaynakları (gerçek istekler) ---
+FAIL İSPARK /Park ham yanıt (20002 ms): FailureKind.timeout İSPARK 
+FAIL İSPARK ayrıştırma (20000 ms): FailureKind.timeout İBB Açık Veri — İSPARK 
+FAIL Overpass (Taksim 1,5 km) (35522 ms): FailureKind.timeout OpenStreetMap (Overpass API) 
+FAIL Overpass yedek sunucu (32321 ms): FailureKind.server OpenStreetMap (Overpass API) HTTP 504
+OK   Nominatim adres arama ("Kadıköy") (201 ms): 8 sonuç · ilk: Kadıköy / İstanbul, Marmara Bölgesi (40.99130, 29.02456)
+OK   CARTO harita döşemesi (14 ms): HTTP 200
+OK   OpenStreetMap harita döşemesi (302 ms): HTTP 200
+OK   Google Maps yol tarifi bağlantısı (101 ms): web: https://www.google.com/maps/dir/?api=1&destination=41.036900%2C28.985000&travelmode=driving (HTTP 200) · uygulama: google.navigation:q=41.036900,28.985000&mode=d
+INFO Güncelleme denetimi: error  Sunucuda yayımlanmış bir sürüm bulunamadı.
+Taksim araması: 35328 ms · 0 otopark · kaynaklar {} · uyarılar [İBB Açık Veri — İSPARK: Sunucu zamanında yanıt vermedi., OpenStreetMap (Overpass API): Sunucu zamanında yanıt vermedi.]
+FAIL Anlık doluluklu otopark sayısı (İSPARK): 0
+EKRAN 02_ana_sayfa kaydedildi
+EKRAN 03_harita kaydedildi
+EKRAN 04_liste kaydedildi
+OK   Birleşik filtre (boş yer + ≤2 km + sıralama): 0 sonuç
+EKRAN 05_liste_filtreli kaydedildi
+EKRAN 06_filtre_sonuc_yok kaydedildi
+EKRAN 07_favoriler kaydedildi
+EKRAN 08_gecmis kaydedildi
+EKRAN 09_yonetim kaydedildi
+--- SQLite ---
+OK   Şema ve yabancı anahtarlar (0 ms): user_version 1 · 1 kayıt · kaynaklar 3
+FAIL Upsert favorileri korur (0 ms): FailureKind.unknown  favori yok
+OK   Yerel kayıt kaskad silme (0 ms): önce fav=1 ziyaret=1 · sonra 0
+EKRAN 10_ayarlar kaydedildi
+EKRAN 11_hakkinda kaydedildi
+Kızılay (Ankara) araması: 0 otopark · {} · anlık doluluklu: 0
+EKRAN 12_ankara_liste kaydedildi
+--- Bağlantı yok senaryosu (gerçek bağlantı hatası: kapalı port) ---
+OK   Çevrimdışı: önbellekten 0 otopark · doluluk gösterilmiyor=true · uyarı=2
+EKRAN 13_cevrimdisi_onbellek kaydedildi
+OK   Çevrimdışı + önbellek yok: hata durumu "İnternet bağlantısı yok veya sunucuya ulaşılamıyor."
+EKRAN 14_baglanti_yok kaydedildi
+Toplam süre: 222 sn · başarısız denetim: 6
+Öz-sınama süresi: 224 sn · en yüksek bellek (WorkingSet): 268 MB · çıkış kodu: 0

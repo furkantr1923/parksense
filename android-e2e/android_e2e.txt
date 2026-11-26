@@ -1,0 +1,64 @@
+== 1) Sürüm APK kurulumu
+Performing Streamed Install
+Success
+OK   APK kuruldu
+    versionCode=1 minSdk=24 targetSdk=36
+    versionName=1.0.0
+== 2) Soğuk açılış (izin istenmeden açılmalı)
+TotalTime: 3529
+WaitTime: 3710
+OK   uygulama açıldı
+OK   açılışta izin istenmedi
+== 3) 'Konumumu kullan' → izin penceresi → REDDET → manuel arama
+UYARI düğme bulunamadı
+OK   izin reddedildi (geri)
+OK   izin reddedilince uygulama çalışmaya devam ediyor
+== 4) İzin verilmiş + GPS (Taksim) ile açılış
+TotalTime: 1888
+OK   GPS ile açılış: uygulama çalışıyor
+BELLEK            TOTAL PSS:    83491            TOTAL RSS:   173432       TOTAL SWAP PSS:      257
+== 5) Yol tarifi bağlantısı (Google Maps yoksa tarayıcı)
+Starting: Intent { act=android.intent.action.VIEW dat=https://www.google.com/... }
+OK   evrensel Maps bağlantısı sistemce açılabiliyor
+OK   kaldırma
+== 6) Öz-sınama APK'sı: tüm ekranlar gerçek veriyle
+Performing Streamed Install
+Success
+EKRAN 01_acilis_konum_izni_yok
+EKRAN 02_ana_sayfa
+EKRAN 03_harita
+EKRAN 04_liste
+EKRAN 05_liste_filtreli
+EKRAN 06_filtre_sonuc_yok
+EKRAN 07_favoriler
+EKRAN 08_gecmis
+EKRAN 09_yonetim
+EKRAN 10_ayarlar
+EKRAN 11_hakkinda
+EKRAN 12_ankara_liste
+EKRAN 13_cevrimdisi_onbellek
+EKRAN 14_baglanti_yok
+PARKSENSE 1.0.0 öz-sınama · 2026-11-26T20:07:52.079862Z · android sdk_gphone64_x86_64-userdebug 14 UE1A.230829.050 12077443 dev-keys
+--- Veri kaynakları (gerçek istekler) ---
+FAIL İSPARK /Park ham yanıt (20001 ms): FailureKind.timeout İSPARK 
+FAIL İSPARK ayrıştırma (20000 ms): FailureKind.timeout İBB Açık Veri — İSPARK 
+FAIL Overpass (Taksim 1,5 km) (67449 ms): FailureKind.server OpenStreetMap (Overpass API) HTTP 504
+FAIL Overpass yedek sunucu (35001 ms): FailureKind.timeout OpenStreetMap (Overpass API) 
+OK   Nominatim adres arama ("Kadıköy") (117 ms): 8 sonuç · ilk: Kadıköy / İstanbul, Marmara Bölgesi (40.99130, 29.02456)
+OK   CARTO harita döşemesi (112 ms): HTTP 200
+OK   OpenStreetMap harita döşemesi (94 ms): HTTP 200
+OK   Google Maps yol tarifi bağlantısı (121 ms): web: https://www.google.com/maps/dir/?api=1&destination=41.036900%2C28.985000&travelmode=driving (HTTP 200) · uygulama: google.navigation:q=41.036900,28.985000&mode=d
+INFO Güncelleme denetimi: error  Sunucuda yayımlanmış bir sürüm bulunamadı.
+Taksim araması: 70096 ms · 0 otopark · kaynaklar {} · uyarılar [İBB Açık Veri — İSPARK: Sunucu zamanında yanıt vermedi., OpenStreetMap (Overpass API): Sunucu zamanında yanıt vermedi.]
+FAIL Anlık doluluklu otopark sayısı (İSPARK): 0
+OK   Birleşik filtre (boş yer + ≤2 km + sıralama): 0 sonuç
+--- SQLite ---
+OK   Şema ve yabancı anahtarlar (0 ms): user_version 1 · 1 kayıt · kaynaklar 3
+FAIL Upsert favorileri korur (0 ms): FailureKind.unknown  favori yok
+OK   Yerel kayıt kaskad silme (1 ms): önce fav=1 ziyaret=1 · sonra 0
+Kızılay (Ankara) araması: 0 otopark · {} · anlık doluluklu: 0
+--- Bağlantı yok senaryosu (gerçek bağlantı hatası: kapalı port) ---
+OK   Çevrimdışı: önbellekten 0 otopark · doluluk gösterilmiyor=true · uyarı=2
+OK   Çevrimdışı + önbellek yok: hata durumu "İnternet bağlantısı yok veya sunucuya ulaşılamıyor."
+Toplam süre: 370 sn · başarısız denetim: 6
+OK   öz-sınama sonunda uygulama çalışıyor

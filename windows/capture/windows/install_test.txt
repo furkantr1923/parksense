@@ -1,0 +1,7 @@
+Kurulum çıkış kodu: 0
+Program dosyası: True
+Başlat menüsü kısayolları: PARKSENSE kaldır.lnk, PARKSENSE.lnk
+Masaüstü kısayolu: True
+Programlar ve Özellikler kaydı: PARKSENSE 1.0.0
+Kurulu uygulama çalışıyor: True
+Kaldırma çıkış kodu: 0 · program klasörü silindi: True

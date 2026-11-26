@@ -1,0 +1,11 @@
+V2 Signer: certificate DN: CN=Furkan, O=PARKSENSE, C=TR
+V2 Signer: certificate SHA-256 digest: 3a4bd02f6f0114cfb65f365fc16fb003d63bc43db64765918df62f4f1245f8ca
+V2 Signer: certificate SHA-1 digest: adedddc99145ad1591f0d9b12fc784720dabcdf0
+V2 Signer: certificate MD5 digest: 710172c58a044599a489108a99b09cc6
+package: name='com.furkan.parksense' versionCode='1' versionName='1.0.0' platformBuildVersionName='16' platformBuildVersionCode='36' compileSdkVersion='36' compileSdkVersionCodename='16'
+targetSdkVersion:'36'
+uses-permission: name='android.permission.INTERNET'
+uses-permission: name='android.permission.ACCESS_COARSE_LOCATION'
+uses-permission: name='android.permission.ACCESS_FINE_LOCATION'
+uses-permission: name='com.furkan.parksense.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION'
+application-label:'PARKSENSE'

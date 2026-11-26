@@ -1,0 +1,3 @@
+Portable: pencere açıldı=True · süre 1700 ms (ayıklama dâhil)
+Portable: 8 sn sonra çalışıyor=True
+Portable SFX süreci kapandı=True

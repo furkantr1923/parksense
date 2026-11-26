@@ -1,0 +1,1 @@
+Pencere açılış süresi: 882 ms · 10 sn sonra WorkingSet: 160 MB · Private: 139 MB · çalışıyor: True
