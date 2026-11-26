@@ -115,7 +115,9 @@ Dikkat ettiğim noktalar (mülakatta anlatılacak kısım):
   masaüstü + Başlat menüsü kısayolu, kaldırma).
 - Windows Portable.exe: Uygulama klasörünü 7-Zip'in küçük SFX modülüyle tek
   dosyaya paketledim; çalışınca geçici klasöre açıp uygulamayı başlatıyor.
-- Android APK: GitHub Actions'ta imzalanıyor. İmza anahtarı ve parolası
+- NOT: Windows dosyaları GitHub'daki Windows sunucusunda üretilir; 'parksense'
+  reposu açılıp kod yüklendiğinde otomatik oluşur (henüz yapılmadı).
+- Android APK: Kendi sürüm anahtarımla imzalandı; CI'da GitHub Secrets'tan imzalanıyor. İmza anahtarı ve parolası
   koda GİRMİYOR (GitHub Secrets veya derlemeye özel geçici anahtar).
 
 
