@@ -15,9 +15,9 @@ nedenleriyle birlikte ayrıca belirtilmiştir.
 | Otomatik testler (`flutter test`) | ✅ **69 / 69 geçti** |
 | Android sürüm APK derlemesi | ✅ Derlendi, imzalandı, manifest doğrulandı |
 | Arayüz görüntü testleri (`tool/screenshots`) | ✅ 10 ekran Android + Windows yerleşiminde çizildi |
-| Windows EXE / Setup / Portable derlemesi | ⏳ **Yapılamadı** — bkz. §5 |
-| Android emülatör / gerçek cihaz testi | ⏳ **Yapılamadı** — bkz. §5 |
-| Canlı veri kaynaklarına bağlantı | ⏳ Geliştirme sunucusundan erişim yok — bkz. §5 |
+| Windows EXE / Setup / Portable derlemesi | ✅ GitHub Actions (windows-latest) — kurulum/kaldırma ve Portable testi geçti |
+| Android emülatör testi (Android 14) | ✅ Kurulum, açılış, izin reddi/kabulü, GPS, kaldırma geçti |
+| Canlı veri kaynakları | ⚠️ Nominatim, harita döşemeleri, Google Maps ✅ · İSPARK ve Overpass CI sunucularından **zaman aşımı** — bkz. §5b |
 
 ---
 
@@ -73,6 +73,34 @@ yatay kart başlığı, harita atfı dar ekranda).
 | **Android emülatör / gerçek cihaz** (kurulum, konum izni, açılış süresi, bellek) | Geliştirme sunucusunda donanım sanallaştırması (KVM) yok. | Aynı iş akışındaki `emulator` işi (Android 14, Pixel 6) `tool/ci/android_e2e.sh` ile kurulum, izin reddetme/verme, GPS, bellek ve tüm ekranları test eder. |
 | **Canlı veri kaynakları** (İSPARK, Overpass, Nominatim, harita döşemeleri) | Geliştirme sunucusunun ağ izin listesi bu alan adlarına çıkışa izin vermiyor. Ayrıştırıcılar belgelenmiş yanıt biçimine göre test edildi. | Uygulamanın öz-sınama modu (`lib/capture/capture_runner.dart`) CI'da her kaynağa **gerçek istek** atar, ham alan adlarını ve sonuçları rapora yazar. |
 | **İnternet yokken gerçek cihazda** | Cihaz yok | Depo + birim/entegrasyon testleriyle doğrulandı; CI öz-sınaması kapalı bağlantı noktasıyla gerçek bağlantı hatası üretip doğrular. |
+
+## 5b. CI'da gerçek çalıştırma sonuçları (26 Kasım 2026)
+
+**Windows (windows-latest, derlenmiş PARKSENSE.exe):**
+- Pencere açılış süresi **832 ms** · 10 sn sonra bellek **167 MB** (WorkingSet) · öz-sınama boyunca en yüksek **240 MB**
+- Setup: sessiz kurulum çıkış kodu 0 · program dosyası ✅ · Başlat menüsü kısayolları (PARKSENSE, PARKSENSE kaldır) ✅ · masaüstü kısayolu ✅ · Programlar ve Özellikler kaydı "PARKSENSE 1.0.0" ✅ · kurulu uygulama açıldı ✅ · kaldırma çıkış kodu 0, klasör silindi ✅
+- Portable: pencere **1,69 sn**'de açıldı (ayıklama dâhil), çalışmaya devam etti, kapanınca SFX süreci sonlandı ✅
+
+**Android (emülatör, Android 14 / Pixel 6):**
+- APK kurulumu ✅ · soğuk açılış **2,0 sn** · açılışta izin istenmedi ✅ · "Konumumu kullan" → izin penceresi → reddedildi → uygulama çalışmaya devam etti ✅ · konumsuz şehir seçimi ✅ · izin verilmiş + GPS ile açılış **1,8 sn** ✅ · bellek **81 MB PSS** · Google Maps bağlantısı açıldı ✅ · kaldırma ✅
+
+**Canlı servisler (her iki platformda aynı sonuç):**
+| Servis | Sonuç |
+|---|---|
+| Nominatim adres araması | ✅ 8 sonuç (57–273 ms) |
+| CARTO ve OSM harita döşemeleri | ✅ HTTP 200 |
+| Google Maps yol tarifi URL'si | ✅ HTTP 200 |
+| İSPARK API (`api.ibb.gov.tr`) | ❌ 20 sn zaman aşımı |
+| Overpass API (2 sunucu) | ❌ 35 sn zaman aşımı |
+| Çevrimdışı senaryo ve hata mesajları | ✅ Doğru uyarı, uygulama çökmedi |
+| SQLite şema / kaskad silme | ✅ |
+
+**Değerlendirme:** GitHub Actions sunucuları ABD'deki bulut ağındadır. İSPARK servisine bu ağdan ulaşılamadı
+(yurt dışı erişim kısıtı olası); Overpass sunucuları da bu ağdan zamanında yanıt vermedi. Bu nedenle CI
+ekran görüntülerinde otopark listesi boştur ve "Upsert favorileri korur" denetimi favori oluşmadığı için
+atlanmıştır (aynı davranış birim testinde ✅ doğrulandı). Uygulama bu durumda çökmeden kullanıcıya açık
+hata mesajı gösterdi. **Türkiye'den gerçek kullanımda doğrulanması gereken tek nokta canlı otopark
+verisinin gelmesidir.**
 
 ## 6. Android paket doğrulaması
 
