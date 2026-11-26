@@ -1,0 +1,50 @@
+name: parksense
+description: "PARKSENSE — Türkiye genelindeki otoparkları harita üzerinde keşfetmeye, fiyat ve doluluk bilgilerini incelemeye yarayan akıllı otopark keşif uygulaması (Android + Windows)."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # Harita: OpenStreetMap tabanlı, API anahtarı gerektirmeyen döşeme (tile) katmanı.
+  flutter_map: ^8.3.2
+  latlong2: ^0.9.1
+  # HTTP istemcisi (İSPARK, Overpass, Nominatim, güncelleme denetimi).
+  http: ^1.6.0
+  # GPS konumu (Android + Windows). İzin yalnızca konum özelliği kullanılırken istenir.
+  geolocator: ^14.1.2
+  # Google Maps navigasyonu, telefon ve web sitesi bağlantıları.
+  url_launcher: ^6.3.3
+  # Yerel SQLite veritabanı (yerel kütüphane, derleme kancalarıyla paketlenir).
+  sqlite3: ^3.9.2
+  # Veritabanı dosyası için platforma uygun uygulama klasörü.
+  path_provider: ^2.1.6
+  # Türkçe tarih ve sayı biçimlendirme.
+  intl: any
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/brand/logo.png
+  fonts:
+    - family: DMSans
+      fonts:
+        - asset: assets/fonts/DMSans-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/DMSans-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/DMSans-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/DMSans-Bold.ttf
+          weight: 700

@@ -1,0 +1,22 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - windows/**
+  errors:
+    # Flutter 3.47+ `package:flutter/material.dart` yerine `material_ui` paketini
+    # öneriyor. Harita katmanı (flutter_map) hâlâ `flutter/material` sınıflarını
+    # kullandığından iki Material kütüphanesini karıştırmak çalışma zamanında
+    # Theme/Localizations uyuşmazlığına yol açar. Ekosistem geçene kadar tek
+    # kaynak olarak `flutter/material` kullanılır.
+    deprecated_member_use: ignore
+
+linter:
+  rules:
+    - prefer_const_constructors
+    - prefer_final_locals
+    - avoid_print
+    - unawaited_futures
+    - require_trailing_commas: false
