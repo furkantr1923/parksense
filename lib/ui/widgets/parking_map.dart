@@ -315,16 +315,21 @@ class _MapButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
+    return DecoratedBox(
+      decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Tooltip(
-          message: tooltip,
-          child: SizedBox(width: 44, height: 44, child: Icon(icon, color: color)),
+        boxShadow: const [BoxShadow(color: Color(0x22000000), blurRadius: 6, offset: Offset(0, 2))],
+      ),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Tooltip(
+            message: tooltip,
+            child: SizedBox(width: 44, height: 44, child: Icon(icon, color: color)),
+          ),
         ),
       ),
     );

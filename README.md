@@ -35,11 +35,11 @@
 
 ## 📸 Ekranlar
 
-> Aşağıdaki görüntüler CI'da **derlenmiş uygulamanın gerçek veriyle** otomatik çalıştırılmasından alınmıştır.
+> Arayüz önizlemeleri `tool/screenshots` testleriyle üretilmiştir (test verisi; harita altlığı testte ağ olmadığı için kapalıdır).
 
-| Android — Ana sayfa | Android — Harita | Android — Detay (İSPARK) |
+| Android — Ana sayfa | Android — Liste | Android — Detay (İSPARK) |
 |---|---|---|
-| <img src="docs/screenshots/android_home.png" width="240"> | <img src="docs/screenshots/android_map.png" width="240"> | <img src="docs/screenshots/android_detail.png" width="240"> |
+| <img src="docs/screenshots/android_home.png" width="240"> | <img src="docs/screenshots/android_list.png" width="240"> | <img src="docs/screenshots/android_detail.png" width="240"> |
 
 | Windows — Liste · Harita · Detay |
 |---|

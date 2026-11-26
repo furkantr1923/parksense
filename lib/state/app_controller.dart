@@ -109,10 +109,11 @@ class AppController extends ChangeNotifier {
     final live = all.where((p) => p.hasLiveOccupancy && p.isOpenNow != false && !p.occupancy!.isFull).toList()
       ..sort((a, b) => b.occupancy!.free.compareTo(a.occupancy!.free));
     if (live.length >= 3) return (live.take(6).toList(), 'Anlık verisi olan ve en çok boş yeri bulunan otoparklar');
-    final priced = all.where((p) => p.price?.effectiveHourly != null).toList()
+    final priced = all.where((p) => p.price?.effectiveHourly != null && !p.nameIsGenerated).toList()
       ..sort((a, b) => a.price!.effectiveHourly!.compareTo(b.price!.effectiveHourly!));
     if (priced.isNotEmpty) return (priced.take(6).toList(), 'Fiyat bilgisi bulunan, saatlik ücreti en uygun otoparklar');
-    final withCap = all.where((p) => p.totalCapacity != null).toList()..sort((a, b) => b.totalCapacity!.compareTo(a.totalCapacity!));
+    final withCap = all.where((p) => p.totalCapacity != null && !p.nameIsGenerated).toList()
+      ..sort((a, b) => b.totalCapacity!.compareTo(a.totalCapacity!));
     return (withCap.take(6).toList(), 'Kapasite bilgisi bulunan en büyük otoparklar');
   }
 
