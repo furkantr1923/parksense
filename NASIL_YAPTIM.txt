@@ -1,0 +1,170 @@
+PARKSENSE — "BUNU NASIL YAPTIN?" SORUSUNA CEVAP
+================================================
+Geliştirici: Furkan · Sürüm 1.0.0 · Kasım 2026
+
+Bu dosya, birisi "Bu uygulamayı nasıl geliştirdin?" diye sorduğunda adım adım
+anlatabilmen için hazırlandı. Her adımda NE yaptım ve NEDEN öyle yaptım yazıyor.
+
+
+1) FİKİR VE KAPSAM
+------------------
+Amaç: Türkiye'deki otoparkları haritada göstermek, fiyat ve doluluk bilgisini
+vermek, Google Maps ile yol tarifine geçmek.
+
+En önemli kural: "Veri uydurma." Gerçek zamanlı doluluk yalnızca gerçek bir
+kaynak varsa gösterilir. Fiyatı bilinmeyen otoparka rastgele ücret yazılmaz.
+Bu yüzden ilk iş veri kaynaklarını araştırmak oldu.
+
+
+2) VERİ KAYNAKLARINI ARAŞTIRMA
+------------------------------
+- İBB Açık Veri Portalı → İSPARK API'si buldum:
+    https://api.ibb.gov.tr/ispark/Park        (tüm otoparklar + anlık boş yer)
+    https://api.ibb.gov.tr/ispark/ParkDetay   (adres, tarife, abonelik)
+  Anahtar gerektirmiyor, resmî kaynak. İstanbul için GERÇEK doluluk buradan geliyor.
+- Türkiye geneli için OpenStreetMap'i kullandım (Overpass API ile
+  amenity=parking sorgusu). Ücretsiz, ODbL lisanslı ama doluluk bilgisi yok.
+  O yüzden bu otoparklarda "Anlık doluluk bilgisi mevcut değil" yazıyor.
+- İzmir'in açık veri portalını da inceledim; servis belgeleri doğrulanmadığı
+  için ilk sürüme almadım ama mimari buna hazır (docs/DATA_SOURCES.md).
+
+Neden önemli? Mülakatta "veriyi nereden aldın, lisansı ne?" sorusuna net
+cevabın olur.
+
+
+3) TEKNOLOJİ SEÇİMİ
+-------------------
+- Flutter + Dart: Tek kodla hem Android hem Windows uygulaması çıkıyor.
+- Harita: flutter_map + OpenStreetMap/CARTO döşemeleri.
+    Mapbox ve Google Maps API anahtarı ve faturalandırma istiyor; anahtar
+    yoksa uygulama çalışmıyor. Google Maps'in Windows SDK'sı da yok.
+    flutter_map anahtarsız, GPU istemiyor, düşük donanımlı PC'de akıcı.
+- Veritabanı: SQLite (sqlite3 paketi). Android ve Windows'ta aynı motor.
+- Durum yönetimi: Flutter'ın kendi ChangeNotifier'ı — ek kütüphane yok, hafif.
+
+
+4) MİMARİ (KATMANLAR)
+---------------------
+  ui/        → Ekranlar (sadece gösterir)
+  state/     → AppController: ekranların konuştuğu tek nokta
+  data/      → Veri sağlayıcıları + veritabanı + birleştirici depo
+  domain/    → Saf iş kuralları: filtre, tarife ayrıştırma, kümeleme, doğrulama
+  core/      → Mesafe hesabı, ₺ biçimi, HTTP katmanı
+
+Neden böyle? Her katman tek bir işi yapıyor; test etmek ve yeni özellik
+eklemek kolay. Örneğin yeni bir belediye API'si eklemek için sadece
+"ParkingProvider" arayüzünü uygulayan tek bir dosya yazmak yetiyor.
+
+
+5) VERİ AKIŞI
+-------------
+Kullanıcı bir yer seçer → AppController → ParkingRepository:
+  a) Bölge İstanbul'daysa İSPARK'ı, her durumda OSM'yi PARALEL sorgular.
+  b) Aynı otopark iki kaynakta varsa (40 m'den yakın) resmî olanı tutar.
+  c) Sonuçları SQLite'a önbellekler.
+  d) İnternet yoksa önbellekteki otoparkları gösterir AMA doluluğu göstermez
+     (eski doluluk "anlık" sanılmasın diye).
+  e) Bir kaynak çökerse diğeri gösterilir, kullanıcıya uyarı çıkar.
+
+
+6) VERİTABANI TASARIMI
+----------------------
+8 tablo: Parking, ParkingPrice, ParkingRating, Favorite, RecentParking,
+VisitHistory, DataSource, AppSettings.
+
+Dikkat ettiğim noktalar (mülakatta anlatılacak kısım):
+- Yabancı anahtarlar (FOREIGN KEY ... ON DELETE CASCADE) açık.
+- "INSERT OR REPLACE" KULLANMADIM. Çünkü REPLACE satırı silip yeniden ekler,
+  bu da kaskadla favorileri siler! Bunun yerine "ON CONFLICT DO UPDATE".
+  Bunu bir testle de kanıtladım.
+- Çok adımlı yazmalar transaction içinde; hata olursa hepsi geri alınıyor.
+- CHECK kısıtları: enlem -90..90, puan 1..5, fiyat >= 0.
+- Veritabanı bozulursa silinmiyor, yedeğe taşınıyor.
+
+
+7) ARAYÜZ
+---------
+- Açık tema, mavi ana renk, DM Sans yazı tipi, sade kartlar.
+- Android: alt gezinme çubuğu (tek elle kullanım), harita↔liste geçişi.
+- Windows: sol menü + liste | harita | detay paneli (geniş ekran).
+- Haritada otopark işaretleri doluluğa göre renkli (yeşil/turuncu/kırmızı,
+  veri yoksa gri). Çok sayıda işaret yakınlaştırmaya göre kümeleniyor →
+  binlerce işaret olsa da akıcı.
+- Eksik bilgi → "Bilgi mevcut değil". Her kayıtta kaynak + güncelleme zamanı.
+- Konum izni açılışta İSTENMİYOR; sadece "Konumumu kullan"a basınca isteniyor.
+  Vermezsen şehir/adres arayarak devam ediyorsun.
+
+
+8) TEST
+-------
+- 69 otomatik test (flutter test):
+    fiyat/tarife ayrıştırma, filtreleme, mesafe, veritabanı, favoriler,
+    veri doğrulama, sağlayıcı ayrıştırma, entegrasyon ve arayüz testleri.
+- Sadece "derleniyor" demedim: GitHub Actions'ta derlenen GERÇEK uygulama
+  kendini gerçek verilerle geziyor, her ekranın görüntüsünü alıyor ve rapor
+  yazıyor (lib/capture/capture_runner.dart).
+- Android emülatöründe: kurulum, izin reddetme/verme, GPS ile açılış, bellek.
+- Windows'ta: açılış süresi, bellek, Setup ile sessiz kurulum → kısayol
+  kontrolü → çalıştırma → kaldırma; Portable'ın açılması.
+- Sonuçlar: docs/TEST_REPORT.md
+
+
+9) PAKETLEME
+------------
+- Windows Setup.exe: Inno Setup ile Türkçe kurulum sihirbazı (klasör seçimi,
+  masaüstü + Başlat menüsü kısayolu, kaldırma).
+- Windows Portable.exe: Uygulama klasörünü 7-Zip'in küçük SFX modülüyle tek
+  dosyaya paketledim; çalışınca geçici klasöre açıp uygulamayı başlatıyor.
+- Android APK: GitHub Actions'ta imzalanıyor. İmza anahtarı ve parolası
+  koda GİRMİYOR (GitHub Secrets veya derlemeye özel geçici anahtar).
+
+
+10) CI/CD (OTOMATİK DERLEME)
+----------------------------
+.github/workflows/build.yml — her "push"ta:
+  test → Windows derleme + test + Setup + Portable → Android APK →
+  emülatör testi → çıktıları "builds" dalına koy → v* etiketinde Release.
+Windows EXE'yi Linux'ta derleyemezsin; bu yüzden GitHub'ın Windows
+sunucusunu kullandım.
+
+
+11) GİZLİLİK VE GELİR MODELİ
+----------------------------
+- Hesap yok, bulut yok, reklam yok, analitik yok. Konum kaydedilmiyor.
+- Favoriler/geçmiş sadece cihazda.
+- Gelir modeli yok ama mimari modüler: ileride isteğe bağlı bir özellik
+  eklemek mevcut kodu bozmaz.
+
+
+12) SIK SORULABİLECEK SORULAR
+-----------------------------
+S: Doluluk bilgisi her yerde var mı?
+C: Hayır. Sadece resmî kaynağı olan yerlerde (şu an İstanbul İSPARK).
+   Diğerlerinde uygulama bunu açıkça söylüyor. Uydurmadım.
+
+S: API anahtarı gerekiyor mu?
+C: Hayır. Tüm servisler anahtarsız ve ücretsiz.
+
+S: İnternet yokken ne oluyor?
+C: Daha önce görülen otoparklar önbellekten gösteriliyor, doluluk gizleniyor,
+   kullanıcıya "çevrimdışı" uyarısı çıkıyor.
+
+S: Neden REPLACE yerine UPSERT?
+C: REPLACE silip eklediği için kaskadla favorileri silerdi. Test ile gösterdim.
+
+S: Yeni şehir nasıl eklenir?
+C: ParkingProvider arayüzünü uygulayan bir sınıf yazıp depoya eklemek yeterli.
+
+
+13) KLASÖR YAPISI (ÖZET)
+------------------------
+lib/main.dart                     → giriş noktası
+lib/data/providers/               → İSPARK, OSM, Nominatim
+lib/data/db/app_database.dart     → SQLite
+lib/data/parking_repository.dart  → birleştirme + önbellek
+lib/domain/                       → filtre, tarife, kümeleme, doğrulama
+lib/ui/                           → ekranlar ve bileşenler
+test/                             → 69 test
+installer/parksense.iss           → Windows kurulum betiği
+.github/workflows/build.yml       → CI/CD
+docs/                             → kurulum, veri kaynakları, test raporu
